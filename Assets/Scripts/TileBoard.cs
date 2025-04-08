@@ -141,7 +141,15 @@ public class TileBoard : MonoBehaviour
         }
         else
         {
-            number = GetFibonacciNumber(IndexInFibonacciSequence(second.number) + 1);
+            if (IndexInFibonacciSequence(second.number) > IndexInFibonacciSequence(first.number))
+            {
+                number = GetFibonacciNumber(IndexInFibonacciSequence(second.number) + 1);
+            }
+            else
+            {
+                number = GetFibonacciNumber(IndexInFibonacciSequence(second.number) + 1);
+            }
+            
         }
         second.SetState(tileStates[index], number);
     }
