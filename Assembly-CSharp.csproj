@@ -50,6 +50,7 @@
     <Compile Include="Assets\Scripts\TileBoard.cs" />
     <Compile Include="Assets\Scripts\TileRow.cs" />
     <Compile Include="Assets\Scripts\TileState.cs" />
+    <Compile Include="Assets\Scripts\Handler.cs" />
     <Compile Include="Assets\Scripts\TileSpot.cs" />
     <Compile Include="Assets\Scripts\TileGrid.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

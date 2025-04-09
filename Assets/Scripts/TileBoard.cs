@@ -10,25 +10,40 @@ public class TileBoard : MonoBehaviour
     private List<Tile> tiles;
     public TileState[] tileStates;
     private bool wait;
+    public Handler handler;
 
     private void Awake()
     {
         grid = GetComponentInChildren<TileGrid>();
         tiles = new List<Tile>(16);
     }
+    
 
-    private void Start()
+    public void CreateTiles()
+    {
+        Tile tile = Instantiate(tilePrefab, grid.transform);
+        tile.SetState(tileStates[0], 1, handler.difficulty);
+        tile.Generate(grid.RandomEmptySpot());
+        tiles.Add(tile);
+    }
+
+    public void SpawnStart()
     {
         CreateTiles();
         CreateTiles();
     }
-
-    private void CreateTiles()
+    
+    public void ClearGame()
     {
-        Tile tile = Instantiate(tilePrefab, grid.transform);
-        tile.SetState(tileStates[0], 1);
-        tile.Generate(grid.RandomEmptySpot());
-        tiles.Add(tile);
+        foreach (var spot in grid.spots)
+        {
+            spot.tile = null;
+        }
+        foreach (var spot in tiles)
+        {
+            Destroy(spot.gameObject);
+        }
+        tiles.Clear();
     }
 
     private void Update()
@@ -116,6 +131,11 @@ public class TileBoard : MonoBehaviour
         {
             CreateTiles();
         }
+
+        if (IsGameOver())
+        {
+            handler.GameOver();
+        }
     }
 
     private bool IsMergingPossible(Tile first, Tile second)
@@ -135,7 +155,7 @@ public class TileBoard : MonoBehaviour
         first.Merge(second.spot);
         int index = Mathf.Clamp(IndexOf(second.state) + 1, 0, tileStates.Length - 1);
         int number;
-        if (second.number == 1)
+        if (second.number == 1 && first.number == 1)
         {
             number = 2;
         }
@@ -147,11 +167,12 @@ public class TileBoard : MonoBehaviour
             }
             else
             {
-                number = GetFibonacciNumber(IndexInFibonacciSequence(second.number) + 1);
+                number = GetFibonacciNumber(IndexInFibonacciSequence(first.number) + 1);
             }
             
         }
-        second.SetState(tileStates[index], number);
+        second.SetState(tileStates[index], number, handler.difficulty);
+        handler.AddScore(number);
     }
 
     private int IndexOf(TileState state)
@@ -195,5 +216,42 @@ public class TileBoard : MonoBehaviour
         }
 
         return -1;
+    }
+
+    private bool IsGameOver()
+    {
+        if (tiles.Count != grid.size)
+        {
+            return false;
+        }
+
+        foreach (var tile in tiles)
+        {
+            TileSpot up = grid.GetNearestSpot(tile.spot, Vector2Int.up);
+            TileSpot down = grid.GetNearestSpot(tile.spot, Vector2Int.down);
+            TileSpot left = grid.GetNearestSpot(tile.spot, Vector2Int.left);
+            TileSpot right = grid.GetNearestSpot(tile.spot, Vector2Int.right);
+
+            if (up != null && IsMergingPossible(tile, up.tile))
+            {
+                return false;
+            }
+
+            if (down != null && IsMergingPossible(tile, down.tile))
+            {
+                return false;
+            }
+
+            if (left != null && IsMergingPossible(tile, left.tile))
+            {
+                return false;
+            }
+
+            if (right != null && IsMergingPossible(tile, right.tile)) 
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -18,7 +18,7 @@ public class Tile : MonoBehaviour
 
     private Dictionary<int, List<string>> equations = new Dictionary<int, List<string>>
     {
-        {1, new List<string>{"\u221a1", "3\u2070", "\u00b2\u2044\u2082", "|\u22121|", "ln(e)"}},
+        {1, new List<string>{"\u221a1", "3\u2070", "\u00b2\u2044\u2082", "|\u22121|", "ln(e)", "1\u00d71", "2\u00d70.5"}},
         {2, new List<string>{"\u221a4", "2\u00b9", "|\u22122|", "log\u2081\u2080(100)", "4\u00f72"}},
         {3, new List<string>{"\u221a9", "3\u00b9", "|\u22123|", "2\u00b2\u22121", "2\u00b3 \u2212 5", "3! \u00f7 2"}},
         {5, new List<string>{"\u221a25", "2\u00b3\u2212 3", "3\u00b2\u2212 4", "|\u22125|", "5!\u00f724", "log\u2082(32)", "ln(e\u2075)"}},
@@ -43,13 +43,27 @@ public class Tile : MonoBehaviour
         text = GetComponentInChildren<TextMeshProUGUI>();
     }
 
-    public void SetState(TileState state, int number)
+    public void SetState(TileState state, int number, string difficulty)
     {
         this.state = state;
         this.number = number;
-        background.color = state.backgroundColor;
+        if (difficulty == "Easy")
+        {
+            background.color = state.backgroundColor;
+            text.text = number.ToString();
+        }
+        else if (difficulty == "Medium")
+        {
+            background.color = state.backgroundColor;
+            text.text = equations[number][random.Next(0, equations[number].Count)];
+        }
+        else if (difficulty == "Hard")
+        {
+            text.text = equations[number][random.Next(0, equations[number].Count)];
+        }
+        //background.color = state.backgroundColor;
         //text.text = number.ToString();
-        text.text = equations[number][random.Next(0, equations[number].Count)];
+        //text.text = equations[number][random.Next(0, equations[number].Count)];
     }
     
 
