@@ -66,6 +66,11 @@ public class Handler : MonoBehaviour
         board.enabled = true;
     }
 
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
     public void GameOver()
     {
         board.enabled = false;
