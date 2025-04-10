@@ -74,10 +74,7 @@ public class Handler : MonoBehaviour
     public void GameOver()
     {
         board.enabled = false;
-        controlButtons.alpha = 0;
-        controlButtons.interactable = false;
-        gameOver.interactable = true;
-        StartCoroutine(FadeInOut(gameOver, 1f, 1f));
+        gameOver.alpha = 1;
     }
 
     private void SetScore(int score)
