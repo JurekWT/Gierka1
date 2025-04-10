@@ -80,23 +80,6 @@ public class Handler : MonoBehaviour
         StartCoroutine(FadeInOut(gameOver, 1f, 1f));
     }
 
-    private IEnumerator FadeInOut(CanvasGroup canvasGroup, float to, float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        
-        float time = 0f;
-        float dura = 0.5f;
-        float from = canvasGroup.alpha;
-
-        while (time < dura)
-        {
-            canvasGroup.alpha = Mathf.Lerp(from, to, time / dura);
-            time += Time.deltaTime;
-            yield return null;
-        }
-        canvasGroup.alpha = to;
-    }
-
     private void SetScore(int score)
     {
         this.score = score;
