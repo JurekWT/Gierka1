@@ -168,6 +168,7 @@ public class TileBoard : MonoBehaviour
             else
             {
                 number = GetFibonacciNumber(IndexInFibonacciSequence(first.number) + 1);
+                index = Mathf.Clamp(IndexOf(first.state) + 1, 0, tileStates.Length - 1);
             }
             
         }

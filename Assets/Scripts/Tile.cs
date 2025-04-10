@@ -89,6 +89,7 @@ public class Tile : MonoBehaviour
         this.spot.tile = this;
         StartCoroutine(Animate(spot.transform.position, false));
     }
+    
 
     private IEnumerator Animate(Vector3 to, bool merge)
     {
